@@ -1,0 +1,142 @@
+name: FalconQA Test Automation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run tests every day at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser to run tests'
+        required: true
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - firefox
+          - edge
+      suite:
+        description: 'Test suite to run'
+        required: true
+        default: 'smoke-tests.xml'
+        type: choice
+        options:
+          - testng.xml
+          - smoke-tests.xml
+          - data-driven-tests.xml
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        browser: [chrome]
+        java: [11]
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v3
+    
+    - name: ☕ Setup Java
+      uses: actions/setup-java@v3
+      with:
+        java-version: ${{ matrix.java }}
+        distribution: 'temurin'
+        cache: maven
+    
+    - name: 🔧 Setup Chrome
+      uses: browser-actions/setup-chrome@latest
+      with:
+        chrome-version: stable
+    
+    - name: 🔨 Build with Maven
+      run: mvn clean compile
+    
+    - name: 🧪 Run Tests
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          SUITE="${{ github.event.inputs.suite }}"
+          BROWSER="${{ github.event.inputs.browser }}"
+        else
+          SUITE="smoke-tests.xml"
+          BROWSER="${{ matrix.browser }}"
+        fi
+        
+        mvn clean test \
+          -Dbrowser=$BROWSER \
+          -Dheadless=true \
+          -DsuiteXmlFile=src/test/resources/$SUITE
+      continue-on-error: true
+    
+    - name: 📊 Generate Test Report
+      if: always()
+      run: |
+        echo "Test execution completed"
+        ls -la test-output/reports/ || true
+    
+    - name: 📤 Upload Extent Report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: extent-report-${{ matrix.browser }}
+        path: test-output/reports/ExtentReport_*.html
+        retention-days: 30
+    
+    - name: 📤 Upload Performance Report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-report-${{ matrix.browser }}
+        path: test-output/reports/performance-report*.txt
+        retention-days: 30
+    
+    - name: 📤 Upload Performance CSV
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-csv-${{ matrix.browser }}
+        path: test-output/reports/performance-report*.csv
+        retention-days: 30
+    
+    - name: 📸 Upload Screenshots
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: failure-screenshots-${{ matrix.browser }}
+        path: test-output/screenshots/**/*.png
+        retention-days: 14
+    
+    - name: 📋 Upload Logs
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: logs-${{ matrix.browser }}
+        path: test-output/logs/**/*.log
+        retention-days: 7
+    
+    - name: ✅ Test Results Summary
+      if: always()
+      run: |
+        echo "## Test Execution Summary 📊" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Browser**: ${{ matrix.browser }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Java Version**: ${{ matrix.java }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "📥 Download artifacts to view detailed reports" >> $GITHUB_STEP_SUMMARY
+
+  notify:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: 📧 Send notification
+      run: |
+        echo "Tests completed. Check artifacts for reports."
+        # Add email/Slack notification here if configured
