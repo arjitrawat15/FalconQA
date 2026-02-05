@@ -365,7 +365,3 @@ This is a personal project for demonstration purposes. However, suggestions and 
 **⭐ If you find this project useful, please star the repository!**
 
 ---
-
-## 🎤 Interview Talking Points
-
-> "FalconQA is a production-grade test automation framework I architected using Java, Selenium, and TestNG. It implements the Page Object Model with a layered architecture—separating core framework utilities, page abstractions, and business logic tests. The framework supports parallel execution via ThreadLocal driver management, comprehensive reporting with Extent Reports, and data-driven testing. I automated 40+ end-to-end scenarios for an e-commerce application, reducing regression cycles by 70% while maintaining 95% test stability. It's designed to be CI/CD-ready and easily scalable for enterprise-level testing needs."
