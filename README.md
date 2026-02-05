@@ -1,4 +1,4 @@
-# 🚀 FalconQA - Enterprise-Grade Selenium Test Automation Framework
+# FalconQA - Enterprise-Grade Selenium Test Automation Framework
 
 [![Java](https://img.shields.io/badge/Java-11-orange.svg)](https://www.oracle.com/java/)
 [![Selenium](https://img.shields.io/badge/Selenium-4.16.1-green.svg)](https://www.selenium.dev/)
