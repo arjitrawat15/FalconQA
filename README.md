@@ -1,4 +1,4 @@
-# FalconQA - Enterprise-Grade Selenium Test Automation Framework
+# FalconQA - Selenium Test Automation Framework
 
 [![Java](https://img.shields.io/badge/Java-11-orange.svg)](https://www.oracle.com/java/)
 [![Selenium](https://img.shields.io/badge/Selenium-4.16.1-green.svg)](https://www.selenium.dev/)
@@ -361,19 +361,6 @@ This is a personal project for demonstration purposes. However, suggestions and 
 - ✅ Descriptive test names and assertions
 - ✅ Configuration-driven framework
 - ✅ Proper exception handling
-
-## 📞 Contact
-
-**Author**: Your Name  
-**Email**: your.email@example.com  
-**LinkedIn**: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)  
-**GitHub**: [Your GitHub Profile](https://github.com/yourusername)
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
----
 
 **⭐ If you find this project useful, please star the repository!**
 
