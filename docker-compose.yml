@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  falconqa-tests:
+    build: .
+    image: falconqa:latest
+    container_name: falconqa-test-runner
+    volumes:
+      - ./test-output:/app/test-output
+      - ./src/test/resources/testdata:/app/src/test/resources/testdata
+    environment:
+      - BROWSER=chrome
+      - HEADLESS=true
+      - MAVEN_OPTS=-Xmx2048m -Xms512m
+    command: >
+      mvn clean test
+      -Dbrowser=chrome
+      -Dheadless=true
+      -DsuiteXmlFile=src/test/resources/testng.xml
+    networks:
+      - test-network
+
+  # Selenium Grid Hub (optional - for distributed testing)
+  selenium-hub:
+    image: selenium/hub:latest
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"
+      - "4442:4442"
+      - "4443:4443"
+    networks:
+      - test-network
+
+  # Chrome Node (optional - for distributed testing)
+  chrome-node:
+    image: selenium/node-chrome:latest
+    container_name: chrome-node
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=3
+    networks:
+      - test-network
+
+  # Firefox Node (optional - for distributed testing)
+  firefox-node:
+    image: selenium/node-firefox:latest
+    container_name: firefox-node
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_MAX_SESSIONS=3
+    networks:
+      - test-network
+
+networks:
+  test-network:
+    driver: bridge
