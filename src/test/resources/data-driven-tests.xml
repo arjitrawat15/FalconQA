@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="FalconQA Data-Driven Tests Only" verbose="1">
+    
+    <listeners>
+        <listener class-name="com.falconqa.listeners.TestListener"/>
+    </listeners>
+    
+    <!-- Data-Driven Tests Only -->
+    
+    <test name="Data-Driven Login Tests">
+        <classes>
+            <class name="com.falconqa.tests.LoginDataDrivenTests"/>
+        </classes>
+    </test>
+    
+    <test name="Data-Driven Checkout Tests">
+        <classes>
+            <class name="com.falconqa.tests.CheckoutDataDrivenTests"/>
+        </classes>
+    </test>
+    
+</suite>

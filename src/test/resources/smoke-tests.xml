@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="FalconQA Smoke Test Suite" verbose="1">
+    
+    <listeners>
+        <listener class-name="com.falconqa.listeners.TestListener"/>
+    </listeners>
+    
+    <!-- Smoke Tests - Critical path only (< 3 minutes) -->
+    
+    <test name="Smoke - Login">
+        <classes>
+            <class name="com.falconqa.tests.LoginTests">
+                <methods>
+                    <include name="testValidLogin"/>
+                    <include name="testLogout"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <test name="Smoke - Products">
+        <classes>
+            <class name="com.falconqa.tests.ProductTests">
+                <methods>
+                    <include name="testProductsDisplayed"/>
+                    <include name="testAddProductToCart"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <test name="Smoke - Cart">
+        <classes>
+            <class name="com.falconqa.tests.CartTests">
+                <methods>
+                    <include name="testProductInCart"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+    <test name="Smoke - Checkout">
+        <classes>
+            <class name="com.falconqa.tests.CheckoutTests">
+                <methods>
+                    <include name="testSuccessfulCheckout"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    
+</suite>

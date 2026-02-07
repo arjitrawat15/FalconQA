@@ -1,0 +1,50 @@
+[
+  {
+    "testCaseId": "TC_CHECKOUT_JSON_001",
+    "firstName": "John",
+    "lastName": "Doe",
+    "postalCode": "12345",
+    "expectedResult": "PASS",
+    "description": "Valid checkout with complete information"
+  },
+  {
+    "testCaseId": "TC_CHECKOUT_JSON_002",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "postalCode": "67890",
+    "expectedResult": "PASS",
+    "description": "Valid checkout with different user data"
+  },
+  {
+    "testCaseId": "TC_CHECKOUT_JSON_003",
+    "firstName": "Alice",
+    "lastName": "Johnson",
+    "postalCode": "54321",
+    "expectedResult": "PASS",
+    "description": "Valid checkout with third data set"
+  },
+  {
+    "testCaseId": "TC_CHECKOUT_JSON_004",
+    "firstName": "",
+    "lastName": "Brown",
+    "postalCode": "11111",
+    "expectedResult": "FAIL",
+    "description": "Checkout with empty first name"
+  },
+  {
+    "testCaseId": "TC_CHECKOUT_JSON_005",
+    "firstName": "Michael",
+    "lastName": "",
+    "postalCode": "22222",
+    "expectedResult": "FAIL",
+    "description": "Checkout with empty last name"
+  },
+  {
+    "testCaseId": "TC_CHECKOUT_JSON_006",
+    "firstName": "Sarah",
+    "lastName": "Wilson",
+    "postalCode": "",
+    "expectedResult": "FAIL",
+    "description": "Checkout with empty postal code"
+  }
+]
